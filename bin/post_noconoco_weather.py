@@ -9,7 +9,7 @@ script_path = os.path.dirname(__file__)
 script_path = script_path if len(script_path) else '.'
 sys.path.append(script_path + '/../src/account')
 
-from src.account.noconoco_weather import NoconocoWeather
+from noconoco_weather import NoconocoWeather
 
 # args
 parser = argparse.ArgumentParser(description='post weathercast to twitter')

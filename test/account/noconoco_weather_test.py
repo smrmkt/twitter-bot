@@ -4,7 +4,6 @@ import json
 import mock
 import unittest
 
-from src.lib.model.account import Account
 from src.account.noconoco_weather import NoconocoWeather
 
 json_path = 'test/data/weather_api_yokohama.json'

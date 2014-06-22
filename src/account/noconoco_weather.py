@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import json
+import os
 import urllib2
+import sys
 
-from src.lib.model.account import Account
+# path
+script_path = os.path.dirname(__file__)
+script_path = script_path if len(script_path) else '.'
+sys.path.append(script_path + '/../lib/model')
+
+from account import Account
 
 class NoconocoWeather:
     def __init__(self, location, conf_path=None):
