@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import sys
-import os.path
 import json
 import urllib2
-
-script_path = os.path.dirname(__file__)
-script_path = script_path if len(script_path) else '.'
-sys.path.append(script_path + '/../lib')
-sys.path.append(script_path + '/../lib/model')
 
 from src.lib.model.account import Account
 
