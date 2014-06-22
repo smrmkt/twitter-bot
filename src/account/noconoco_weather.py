@@ -1,20 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import sys
-import os.path
 import json
 import urllib2
 
-script_path = os.path.dirname(__file__)
-script_path = script_path if len(script_path) else '.'
-sys.path.append(script_path + '/../lib')
-sys.path.append(script_path + '/../lib/model')
-
-from account import Account
+from src.lib.model.account import Account
 
 class NoconocoWeather:
-    def __init__(self, location):
-        self.__account = Account('noconoco-weather')
+    def __init__(self, location, conf_path=None):
+        self.__account = Account('noconoco-weather', conf_path)
         self.__location = self.encode_location(location)
 
     def get_info(self):
@@ -29,8 +22,12 @@ class NoconocoWeather:
         for i in range(0, 2):
             date = (info['forecasts'][i]['dateLabel']).encode('utf-8')
             weather = (info['forecasts'][i]['telop']).encode('utf-8')
-            temp =  (info['forecasts'][i ]['temperature']['max']['celsius']).encode('utf-8')
-            message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + '度だし\n'
+            temp = info['forecasts'][i]['temperature']['max']
+            if temp is not None:
+                temp = (temp['celsius']).encode('utf-8') + '度だ'
+            else:
+                temp = 'よくわかんない'
+            message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + 'し\n'
         return message + 'そんなことより早くあたしを撫でればいいし'
 
     def get_weather_info(self):
