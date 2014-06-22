@@ -4,7 +4,9 @@ python:
   - 2.7
 
 install:
-  - pip install coveralls, coverage, python-twitter
+  - pip install coveralls
+  - pip install coverage
+  - pip install python-twitter
 
 script:
   - coverage run --source=noconoco_weather_test setup.py test

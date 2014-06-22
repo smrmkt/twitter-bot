@@ -3,8 +3,8 @@
 from setuptools import setup, find_packages
 import sys
 
-sys.path.append('./src')
-sys.path.append('./test')
+sys.path.append('./src/account')
+sys.path.append('./test/account')
 
 setup(
     name = 'Twitter-bot',
