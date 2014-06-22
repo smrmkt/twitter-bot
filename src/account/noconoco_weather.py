@@ -6,8 +6,8 @@ import urllib2
 from src.lib.model.account import Account
 
 class NoconocoWeather:
-    def __init__(self, location):
-        self.__account = Account('noconoco-weather')
+    def __init__(self, location, conf_path=None):
+        self.__account = Account('noconoco-weather', conf_path)
         self.__location = self.encode_location(location)
 
     def get_info(self):
