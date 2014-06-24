@@ -12,14 +12,13 @@ sys.path.append(script_path + '/../lib/model')
 
 from account import Account
 
-location_path = 'src/data/livedoor_weather_api.txt'
+location_path = script_path + '/../data/livedoor_weather_api.txt'
 
 class NoconocoWeather:
-    def __init__(self, location, conf_path=None):
+    def __init__(self, conf_path=None):
         lines = open(location_path).readlines()
         self.__locations = {k:v for k,v in [line.strip().split(',') for line in lines]}
         self.__account = Account('noconoco-weather', conf_path)
-        self.__location = self.encode_location(location)
 
     def get_info(self):
         return self.__account.info()
@@ -27,8 +26,9 @@ class NoconocoWeather:
     def post(self, message):
         self.__account.post(message)
 
-    def get_weather_message(self):
-        info = self.get_weather_info()
+    def get_weather_message(self, location):
+        location_code = self.encode_location(location)
+        info = self.get_weather_info(location_code)
         message = (info['location']['city']).encode('utf-8') + 'の天気をお知らせするしー\n'
         for i in range(0, 2):
             date = (info['forecasts'][i]['dateLabel']).encode('utf-8')
@@ -41,9 +41,8 @@ class NoconocoWeather:
             message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + 'し\n'
         return message + 'そんなことより早くあたしを撫でればいいし'
 
-    def get_weather_info(self):
-        # yokohama
-        url = 'http://weather.livedoor.com/forecast/webservice/json/v1?city=%s' % self.__location
+    def get_weather_info(self, location):
+        url = 'http://weather.livedoor.com/forecast/webservice/json/v1?city=%s' % location
         res = urllib2.urlopen(url)
         return json.loads(res.read())
 

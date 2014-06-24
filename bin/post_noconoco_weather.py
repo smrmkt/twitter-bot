@@ -17,5 +17,6 @@ parser.add_argument('location', nargs='?', default='横浜')
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    bot = NoconocoWeather(args.location)
-    bot.post(bot.get_weather_message())
+    bot = NoconocoWeather()
+    message = bot.get_weather_message(args.location)
+    bot.post(message)
