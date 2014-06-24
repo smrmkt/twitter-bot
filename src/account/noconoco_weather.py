@@ -188,4 +188,7 @@ class NoconocoWeather:
             '旭川' : '12010',
             '稚内' : '11000'
         }
-        return locations[location]
+        if locations.has_key(location):
+            return locations[location]
+        else:
+            raise KeyError

@@ -25,6 +25,12 @@ class NoconocoWeatherTest(unittest.TestCase):
                 'そんなことより早くあたしを撫でればいいし'
         self.assertEqual(bot.get_weather_message(), message)
 
+    def test_encode_location(self):
+        bot = NoconocoWeather('横浜', '/../../../test/conf/config.ini')
+        self.assertEqual('130010', bot.encode_location('東京'))
+        self.assertEqual('140010', bot.encode_location('横浜'))
+        self.assertRaises(KeyError, bot.encode_location, 0)
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTests(unittest.makeSuite(NoconocoWeatherTest))
