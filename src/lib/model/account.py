@@ -8,7 +8,7 @@ class Account:
     def __init__(self, screen_name, conf_path=None):
         # set user screen name
         self.__screen_name = screen_name
-        self.__conf_path = '/../../conf/config.ini'
+        self.__conf_path = '/../../conf/api_keys.conf'
 
         # initialize API
         conf = ConfigParser.SafeConfigParser()

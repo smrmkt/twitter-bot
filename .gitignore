@@ -1,5 +1,6 @@
 *.egg-info
 *.idea
 *.pyc
-src/conf/*ini
+src/conf/*conf
+src/conf/*bak
 .coverage
