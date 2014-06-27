@@ -2,5 +2,5 @@
 *.idea
 *.pyc
 src/conf/*conf
-src/backup/*bak
+src/backup
 .coverage

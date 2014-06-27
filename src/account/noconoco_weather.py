@@ -48,7 +48,7 @@ class NoconocoWeather:
             if location in self.__locations:
                 message = '@' + mention.user.screen_name.encode('utf-8') +\
                           ' ' + self.get_weather_message(location)
-                self.__account.reply(message, mention.user.id)
+                self.__account.reply(message, mention.id_str)
 
     def get_weather_info(self, location):
         url = 'http://weather.livedoor.com/forecast/webservice/json/v1?city=%s' % location

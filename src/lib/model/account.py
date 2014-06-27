@@ -51,5 +51,5 @@ class Account:
                f.write(str(last_mention))
         return mentions
 
-    def reply(self, message, in_reply_to_user_id):
-        self.__api.PostUpdate(message, in_reply_to_user_id)
+    def reply(self, message, in_reply_to_status_id):
+        self.__api.PostUpdate(message, in_reply_to_status_id)
