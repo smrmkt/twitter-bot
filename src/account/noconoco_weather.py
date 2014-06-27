@@ -59,4 +59,4 @@ class NoconocoWeather:
         if location in self.__locations:
             return self.__locations[location]
         else:
-            raise KeyError
+            raise KeyError('Invalid location name')
