@@ -23,8 +23,17 @@ class NoconocoWeather:
     def get_info(self):
         return self.__account.info()
 
-    def post(self, message):
-        self.__account.post(message)
+    def post(self, message, in_reply_to_status_id=None):
+        self.__account.post(message, in_reply_to_status_id)
+
+    def get_mentions(self):
+        return self.__account.unread_mention()
+
+    def get_reply_message(self, mention):
+        location = (mention.text.split(' ')[1]).encode('utf-8')
+        if location in self.__locations:
+            return '@' + mention.user.screen_name.encode('utf-8') +\
+                   ' ' + self.get_weather_message(location)
 
     def get_weather_message(self, location):
         location_code = self.encode_location(location)
@@ -40,15 +49,6 @@ class NoconocoWeather:
                 temp = 'よくわかんない'
             message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + 'し\n'
         return message + 'そんなことより早くあたしを撫でればいいし'
-
-    def reply(self):
-        mentions = self.__account.unread_mention()
-        for mention in mentions:
-            location = (mention.text.split(' ')[1]).encode('utf-8')
-            if location in self.__locations:
-                message = '@' + mention.user.screen_name.encode('utf-8') +\
-                          ' ' + self.get_weather_message(location)
-                self.__account.reply(message, mention.id_str)
 
     def get_weather_info(self, location):
         url = 'http://weather.livedoor.com/forecast/webservice/json/v1?city=%s' % location

@@ -23,4 +23,7 @@ if __name__ == '__main__':
         message = bot.get_weather_message(args.location)
         bot.post(message)
     elif args.menu == 'reply':
-        bot.reply()
+        mentions = bot.get_mentions()
+        for mention in mentions:
+            message  = bot.get_reply_message(mention)
+            bot.post(message, mention.id_str)
