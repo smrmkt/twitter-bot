@@ -13,6 +13,7 @@ sys.path.append(script_path + '/../lib/model')
 from account import Account
 
 location_path = script_path + '/../data/livedoor_weather_api.txt'
+api_base_url = 'http://weather.livedoor.com/forecast/webservice/json/v1'
 
 class NoconocoWeather:
     def __init__(self, conf_path=None):
@@ -51,7 +52,7 @@ class NoconocoWeather:
         return message + 'そんなことより早くあたしを撫でればいいし'
 
     def get_weather_info(self, location):
-        url = 'http://weather.livedoor.com/forecast/webservice/json/v1?city=%s' % location
+        url = api_base_url + '?city=%s' % location
         res = urllib2.urlopen(url)
         return json.loads(res.read())
 
