@@ -38,18 +38,21 @@ class NoconocoWeather:
 
     def get_weather_message(self, location):
         location_code = self.encode_location(location)
-        info = self.get_weather_info(location_code)
-        message = (info['location']['city']).encode('utf-8') + 'の天気をお知らせするしー\n'
-        for i in range(0, 2):
-            date = (info['forecasts'][i]['dateLabel']).encode('utf-8')
-            weather = (info['forecasts'][i]['telop']).encode('utf-8')
-            temp = info['forecasts'][i]['temperature']['max']
-            if temp is not None:
-                temp = (temp['celsius']).encode('utf-8') + '度だ'
-            else:
-                temp = 'よくわかんない'
-            message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + 'し\n'
-        return message + 'そんなことより早くあたしを撫でればいいし'
+        if location_code == None:
+            return self.get_error_message()
+        else:
+            info = self.get_weather_info(location_code)
+            message = (info['location']['city']).encode('utf-8') + 'の天気をお知らせするしー\n'
+            for i in range(0, 2):
+                date = (info['forecasts'][i]['dateLabel']).encode('utf-8')
+                weather = (info['forecasts'][i]['telop']).encode('utf-8')
+                temp = info['forecasts'][i]['temperature']['max']
+                if temp is not None:
+                    temp = (temp['celsius']).encode('utf-8') + '度だ'
+                else:
+                    temp = 'よくわかんない'
+                message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + 'し\n'
+            return message + 'そんなことより早くあたしを撫でればいいし'
 
     def get_weather_info(self, location):
         url = api_base_url + '?city=%s' % location
@@ -60,4 +63,7 @@ class NoconocoWeather:
         if location in self.__locations:
             return self.__locations[location]
         else:
-            raise KeyError('Invalid location name')
+            return None
+
+    def get_error_message(self):
+        return 'そんな場所知らないしー'

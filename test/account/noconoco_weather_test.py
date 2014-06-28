@@ -40,7 +40,7 @@ class NoconocoWeatherTest(unittest.TestCase):
         bot = NoconocoWeather('/../../../test/conf/api_keys.conf')
         self.assertEqual('130010', bot.encode_location('東京'))
         self.assertEqual('140010', bot.encode_location('横浜'))
-        self.assertRaises(KeyError, bot.encode_location, 0)
+        self.assertEqual(None, bot.encode_location(0))
 
 def suite():
     suite = unittest.TestSuite()
