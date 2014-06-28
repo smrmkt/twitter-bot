@@ -48,7 +48,7 @@ class Account:
         last_mention = 0
         if os.path.isfile(self.__mention_path):
             last_mention = int(open(self.__mention_path).read().strip())
-        elif not os.isdir(self.__backup_dir):
+        elif not os.path.isdir(self.__backup_dir):
             os.mkdir(self.__backup_dir)
         mentions = self.__api.GetMentions(since_id=last_mention)
         if len(mentions) > 0:
