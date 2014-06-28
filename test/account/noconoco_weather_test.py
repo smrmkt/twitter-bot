@@ -3,7 +3,6 @@
 import json
 import mock
 import tweepy.models
-import twitter
 import unittest
 
 from src.account.noconoco_weather import NoconocoWeather
