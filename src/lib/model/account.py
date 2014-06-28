@@ -14,8 +14,8 @@ class Account:
         self.__conf_path = '/../../conf/api_keys.conf'
         if conf_path is not None:
             self.__conf_path = conf_path
-        self.__mention_path = script_path + '/../../backup/' +\
-                              screen_name + '/last_mention.bak'
+        self.__backup_dir = script_path + '/../../backup/' + screen_name
+        self.__mention_path = self.__backup_dir + 'last_mention.bak'
         if mention_path is not None:
             self.__mention_path = mention_path
 
@@ -46,8 +46,10 @@ class Account:
 
     def unread_mention(self):
         last_mention = 0
-        if os.path.exists(self.__mention_path):
+        if os.path.isfile(self.__mention_path):
             last_mention = int(open(self.__mention_path).read().strip())
+        elif not os.isdir(self.__backup_dir):
+            os.mkdir(self.__backup_dir)
         mentions = self.__api.GetMentions(since_id=last_mention)
         if len(mentions) > 0:
             last_mention = mentions[-1].id

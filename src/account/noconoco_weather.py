@@ -32,13 +32,12 @@ class NoconocoWeather:
 
     def get_reply_message(self, mention):
         location = (mention.text.split(' ')[1]).encode('utf-8')
-        if location in self.__locations:
-            return '@' + mention.user.screen_name.encode('utf-8') +\
-                   ' ' + self.get_weather_message(location)
+        return '@' + mention.user.screen_name.encode('utf-8') +\
+               ' ' + self.get_weather_message(location)
 
     def get_weather_message(self, location):
         location_code = self.encode_location(location)
-        if location_code == None:
+        if location_code is None:
             return self.get_error_message()
         else:
             info = self.get_weather_info(location_code)
