@@ -10,7 +10,7 @@ script_path = script_path if len(script_path) else '.'
 
 class Account:
     def __init__(self, screen_name, conf_path=None, mention_path=None):
-        # set user screen name
+        # set user params
         self.__screen_name = screen_name
         self.__conf_path = '/../../conf/api_keys.conf'
         if conf_path is not None:
@@ -20,7 +20,7 @@ class Account:
         if mention_path is not None:
             self.__mention_path = mention_path
 
-        # initialize python-twitter api
+        # initialize tweepy api
         conf = ConfigParser.SafeConfigParser()
         conf.read(os.path.dirname(__file__) + self.__conf_path)
         auth = tweepy.OAuthHandler(
