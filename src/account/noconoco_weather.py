@@ -2,8 +2,9 @@
 
 import json
 import os
-import urllib2
 import sys
+import urllib2
+import tweepy
 
 # path
 script_path = os.path.dirname(__file__)
@@ -18,8 +19,9 @@ api_base_url = 'http://weather.livedoor.com/forecast/webservice/json/v1'
 class NoconocoWeather:
     def __init__(self, conf_path=None):
         lines = open(location_path).readlines()
-        self.__locations = {k:v for k,v in [line.strip().split(',') for line in lines]}
-        self.__account = Account('noconoco-weather', conf_path)
+        self.__locations = {k:'%06d'%int(v)
+                            for k,v in [line.strip().split(',') for line in lines]}
+        self.__account = Account('noco_weather', conf_path)
 
     def get_info(self):
         return self.__account.info()
@@ -66,3 +68,36 @@ class NoconocoWeather:
 
     def get_error_message(self):
         return 'そんな場所知らないしー'
+
+    def stream_user_timeline(self):
+        self.__account.userstream(NoconocoWeatherStreamListener(bot=self))
+
+class NoconocoWeatherStreamListener(tweepy.StreamListener):
+    def __init__(self, api=None, bot=None):
+        self.__bot = bot
+        self.api = api or tweepy.API()
+
+    def on_status(self, status):
+        info = self.__bot.get_info()
+        if self.is_mention(status):
+            message = self.__bot.get_reply_message(status)
+            self.__bot.post(message, status.id_str)
+
+    def on_error(self, status_code):
+        print 'An error has occured! Status code = %s' % status_code
+        return True  # keep stream alive
+
+    def on_timeout(self):
+        print 'Snoozing Zzz...'
+
+    def is_mention(self, status):
+        try:
+            info = self.__bot.get_info()
+            tokens = status.text.split(' ')
+            if tokens[0] == '@' + info.screen_name:
+                return True
+            else:
+                return False
+        except:
+            return False
+

@@ -27,3 +27,5 @@ if __name__ == '__main__':
         for mention in mentions:
             message = bot.get_reply_message(mention)
             bot.post(message, mention.id_str)
+    elif args.menu == 'stream':
+        bot.stream_user_timeline()

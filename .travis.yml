@@ -5,7 +5,7 @@ python:
 
 install:
   - pip install coveralls
-  - pip install python-twitter
+  - pip install tweepy
 
 script:
   - coverage run --source=noconoco_weather_test setup.py test

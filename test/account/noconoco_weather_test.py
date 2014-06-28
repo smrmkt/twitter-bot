@@ -2,13 +2,12 @@
 
 import json
 import mock
-import twitter
+import tweepy.models
 import unittest
 
 from src.account.noconoco_weather import NoconocoWeather
 
 weather_api_path = 'test/data/weather_api_yokohama.json'
-mention_path = 'test/data/noconoco_weather_mention.json'
 default_message = '横浜の天気をお知らせするしー\n' \
                   '今日の天気は「曇り」で最高気温はよくわかんないし\n' \
                   '明日の天気は「曇り」で最高気温は27度だし\n' \
@@ -22,6 +21,15 @@ class NoconocoWeatherTest(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def create_user(self, text, id_str, screen_name):
+        user = tweepy.models.User()
+        user.screen_name = screen_name
+        mention = tweepy.models.Status()
+        mention.text = text.decode('utf-8')
+        mention.id_str = id_str
+        mention.user = user
+        return mention
+
     def test_get_weather_message(self):
         bot = NoconocoWeather('/../../../test/conf/api_keys.conf')
         bot.get_weather_info = mock.MagicMock()
@@ -34,18 +42,18 @@ class NoconocoWeatherTest(unittest.TestCase):
         bot = NoconocoWeather('/../../../test/conf/api_keys.conf')
         bot.get_weather_info = mock.MagicMock()
         bot.get_weather_info.return_value = json.load(open(weather_api_path))
-        d = open(mention_path)
         # valid location '横浜'
-        mention = twitter.Status.NewFromJsonDict(json.loads(d.readline()))
+        mention = self.create_user('@noco_weather 横浜', '421810126546812930', 'hoge')
         message = '@hoge ' + default_message
         self.assertEqual(bot.get_reply_message(mention), message)
-        # invalid location 'hoge'
-        mention = twitter.Status.NewFromJsonDict(json.loads(d.readline()))
+        # # invalid location 'hoge'
+        mention = self.create_user('@noco_weather hoge', '421810126546812930', 'hoge')
         message = '@hoge ' + error_message
         self.assertEqual(bot.get_reply_message(mention), message)
 
     def test_encode_location(self):
         bot = NoconocoWeather('/../../../test/conf/api_keys.conf')
+        self.assertEqual('016010', bot.encode_location('札幌'))
         self.assertEqual('130010', bot.encode_location('東京'))
         self.assertEqual('140010', bot.encode_location('横浜'))
         self.assertEqual(None, bot.encode_location(0))
