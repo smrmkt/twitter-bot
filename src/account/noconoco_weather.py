@@ -18,7 +18,8 @@ api_base_url = 'http://weather.livedoor.com/forecast/webservice/json/v1'
 class NoconocoWeather:
     def __init__(self, conf_path=None):
         lines = open(location_path).readlines()
-        self.__locations = {k:v for k,v in [line.strip().split(',') for line in lines]}
+        self.__locations = {k:'%06d'%int(v)
+                            for k,v in [line.strip().split(',') for line in lines]}
         self.__account = Account('noconoco-weather', conf_path)
 
     def get_info(self):

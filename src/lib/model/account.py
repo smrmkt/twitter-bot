@@ -2,7 +2,8 @@
 
 import ConfigParser
 import os
-import twitter
+import tweepy
+
 # path
 script_path = os.path.dirname(__file__)
 script_path = script_path if len(script_path) else '.'
@@ -19,30 +20,31 @@ class Account:
         if mention_path is not None:
             self.__mention_path = mention_path
 
-        # initialize API
+        # initialize python-twitter api
         conf = ConfigParser.SafeConfigParser()
         conf.read(os.path.dirname(__file__) + self.__conf_path)
-        self.__api = twitter.Api(
-            consumer_key=conf.get(screen_name, 'consumer_key'),
-            consumer_secret=conf.get(screen_name, 'consumer_secret'),
-            access_token_key=conf.get(screen_name, 'access_token_key'),
-            access_token_secret=conf.get(screen_name, 'access_token_secret')
-        )
+        auth = tweepy.OAuthHandler(
+            conf.get(screen_name, 'consumer_key'),
+            conf.get(screen_name, 'consumer_secret'))
+        auth.set_access_token(
+            conf.get(screen_name, 'access_token_key'),
+            conf.get(screen_name, 'access_token_secret'))
+        self.__api = tweepy.API(auth)
 
     def info(self):
-        return self.__api.GetUser(screen_name=self.__screen_name)
+        return self.__api.get_user(screen_name=self.__screen_name)
 
     def tl(self):
-        return self.__api.GetUserTimeline(self.__screen_name)
+        return self.__api.user_timeline(self.__screen_name)
 
     def post(self, message, in_reply_to_status_id=None):
         if in_reply_to_status_id is None:
-            self.__api.PostUpdate(message)
+            self.__api.update_status(message)
         else:
-            self.__api.PostUpdate(message, in_reply_to_status_id)
+            self.__api.update_status(message, in_reply_to_status_id)
 
     def mention(self):
-        return self.__api.GetMentions()
+        return self.__api.mentions_timeline()
 
     def unread_mention(self):
         last_mention = 0
@@ -50,7 +52,7 @@ class Account:
             last_mention = int(open(self.__mention_path).read().strip())
         elif not os.path.isdir(self.__backup_dir):
             os.mkdir(self.__backup_dir)
-        mentions = self.__api.GetMentions(since_id=last_mention)
+        mentions = self.__api.mentions_timeline(since_id=last_mention)
         if len(mentions) > 0:
             last_mention = mentions[-1].id
             with open(self.__mention_path, 'w') as f:
