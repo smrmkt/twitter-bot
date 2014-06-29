@@ -12,7 +12,7 @@ default_message = '横浜の天気をお知らせするしー\n' \
                   '今日の天気は「曇り」で最高気温はよくわかんないし\n' \
                   '明日の天気は「曇り」で最高気温は27度だし\n' \
                   'そんなことより早くあたしを撫でればいいし'
-error_message = 'そんな場所知らないしー'
+error_message = 'hogeとか，そんな場所知らないしー'
 
 class NoconocoWeatherTest(unittest.TestCase):
     def setUp(self):

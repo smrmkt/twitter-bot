@@ -40,7 +40,7 @@ class NoconocoWeather:
     def get_weather_message(self, location):
         location_code = self.encode_location(location)
         if location_code is None:
-            return self.get_error_message()
+            return self.get_error_message(location)
         else:
             info = self.get_weather_info(location_code)
             message = (info['location']['city']).encode('utf-8') + 'の天気をお知らせするしー\n'
@@ -66,8 +66,8 @@ class NoconocoWeather:
         else:
             return None
 
-    def get_error_message(self):
-        return 'そんな場所知らないしー'
+    def get_error_message(self, location):
+        return location + 'とか，そんな場所知らないしー'
 
     def stream_user_timeline(self):
         self.__account.userstream(NoconocoWeatherStreamListener(bot=self))
