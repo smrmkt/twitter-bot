@@ -75,7 +75,7 @@ class NoconocoWeather:
 
     def get_datetime(self):
         d = datetime.datetime.today()
-        return ' posted at ' + d.strftime("%H:%M:%S")
+        return ' (' + d.strftime("%H:%M:%S") + ')'
 
 class NoconocoWeatherStreamListener(tweepy.StreamListener):
     def __init__(self, api=None, bot=None):
