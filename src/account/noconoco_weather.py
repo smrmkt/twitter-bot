@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import json
 import os
-import random
 import sys
 import urllib2
 import tweepy
@@ -73,8 +73,9 @@ class NoconocoWeather:
     def stream_user_timeline(self):
         self.__account.userstream(NoconocoWeatherStreamListener(bot=self))
 
-    def get_white_space(self):
-        return ' ' * random.randint(0,10)
+    def get_datetime(self):
+        d = datetime.datetime.today()
+        return ' posted at ' + d.strftime("%H:%M:%S")
 
 class NoconocoWeatherStreamListener(tweepy.StreamListener):
     def __init__(self, api=None, bot=None):
