@@ -54,7 +54,7 @@ class NoconocoWeather:
                 else:
                     temp = 'よくわかんない'
                 message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + 'し\n'
-            return message + 'そんなことより早くあたしを撫でればいいし' + self.get_white_space()
+            return message + 'そんなことより早くあたしを撫でればいいし' + self.get_datetime()
 
     def get_weather_info(self, location):
         url = api_base_url + '?city=%s' % location
@@ -68,7 +68,7 @@ class NoconocoWeather:
             return None
 
     def get_error_message(self, location):
-        return location + 'とか，そんな場所知らないしー' + self.get_white_space()
+        return location + 'とか，そんな場所知らないしー' + self.get_datetime()
 
     def stream_user_timeline(self):
         self.__account.userstream(NoconocoWeatherStreamListener(bot=self))
