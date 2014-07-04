@@ -2,6 +2,7 @@
 
 import json
 import os
+import random
 import sys
 import urllib2
 import tweepy
@@ -53,7 +54,7 @@ class NoconocoWeather:
                 else:
                     temp = 'よくわかんない'
                 message = message + date + 'の天気は「' + weather + '」で最高気温は' + temp + 'し\n'
-            return message + 'そんなことより早くあたしを撫でればいいし'
+            return message + 'そんなことより早くあたしを撫でればいいし' + self.get_white_space()
 
     def get_weather_info(self, location):
         url = api_base_url + '?city=%s' % location
@@ -67,10 +68,13 @@ class NoconocoWeather:
             return None
 
     def get_error_message(self, location):
-        return location + 'とか，そんな場所知らないしー'
+        return location + 'とか，そんな場所知らないしー' + self.get_white_space()
 
     def stream_user_timeline(self):
         self.__account.userstream(NoconocoWeatherStreamListener(bot=self))
+
+    def get_white_space(self):
+        return ' ' * random.randint(0,10)
 
 class NoconocoWeatherStreamListener(tweepy.StreamListener):
     def __init__(self, api=None, bot=None):

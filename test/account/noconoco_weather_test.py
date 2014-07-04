@@ -34,6 +34,8 @@ class NoconocoWeatherTest(unittest.TestCase):
         bot = NoconocoWeather('/../../../test/conf/api_keys.conf')
         bot.get_weather_info = mock.MagicMock()
         bot.get_weather_info.return_value = json.load(open(weather_api_path))
+        bot.get_white_space = mock.MagicMock()
+        bot.get_white_space.return_value = ''
         self.assertEqual(bot.get_weather_message('横浜'), default_message)
         self.assertEqual(bot.get_weather_message('hoge'), error_message)
 
@@ -42,6 +44,8 @@ class NoconocoWeatherTest(unittest.TestCase):
         bot = NoconocoWeather('/../../../test/conf/api_keys.conf')
         bot.get_weather_info = mock.MagicMock()
         bot.get_weather_info.return_value = json.load(open(weather_api_path))
+        bot.get_white_space = mock.MagicMock()
+        bot.get_white_space.return_value = ''
         # valid location '横浜'
         mention = self.create_user('@noco_weather 横浜', '421810126546812930', 'hoge')
         message = '@hoge ' + default_message
