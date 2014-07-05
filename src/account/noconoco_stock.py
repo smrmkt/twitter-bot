@@ -18,7 +18,7 @@ base_url = 'http://info.finance.yahoo.co.jp/'
 
 class NoconocoStock:
     def __init__(self, conf_path=None):
-        self.__account = Account('noco_stock', conf_path)
+        self.__account = Account('noconoco_bot', conf_path)
 
     def get_info(self):
         return self.__account.info()
@@ -91,7 +91,6 @@ class NoconocoStockStreamListener(tweepy.StreamListener):
         self.api = api or tweepy.API()
 
     def on_status(self, status):
-        info = self.__bot.get_info()
         if self.is_mention(status):
             message = self.__bot.get_reply_message(status)
             self.__bot.post(message, status.id_str)

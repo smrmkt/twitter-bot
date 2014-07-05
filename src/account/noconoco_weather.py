@@ -22,7 +22,7 @@ class NoconocoWeather:
         lines = open(location_path).readlines()
         self.__locations = {k:'%06d'%int(v)
                             for k,v in [line.strip().split(',') for line in lines]}
-        self.__account = Account('noco_weather', conf_path)
+        self.__account = Account('noconoco_bot', conf_path)
 
     def get_info(self):
         return self.__account.info()
@@ -83,7 +83,6 @@ class NoconocoWeatherStreamListener(tweepy.StreamListener):
         self.api = api or tweepy.API()
 
     def on_status(self, status):
-        info = self.__bot.get_info()
         if self.is_mention(status):
             message = self.__bot.get_reply_message(status)
             self.__bot.post(message, status.id_str)

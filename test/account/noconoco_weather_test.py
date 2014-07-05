@@ -54,11 +54,11 @@ class NoconocoWeatherTest(unittest.TestCase):
         bot.get_datetime = mock.MagicMock()
         bot.get_datetime.return_value = ' (22:30:00)'
         # valid location '横浜'
-        mention = self.create_user('@noco_weather 横浜', '421810126546812930', 'hoge')
+        mention = self.create_user('@noconoco_bot 横浜', '421810126546812930', 'hoge')
         message = '@hoge ' + default_message
         self.assertEqual(bot.get_reply_message(mention), message)
         # # invalid location 'hoge'
-        mention = self.create_user('@noco_weather hoge', '421810126546812930', 'hoge')
+        mention = self.create_user('@noconco_bot hoge', '421810126546812930', 'hoge')
         message = '@hoge ' + error_message
         self.assertEqual(bot.get_reply_message(mention), message)
 
