@@ -53,15 +53,20 @@ class NoconocoStreamListener(tweepy.StreamListener):
         if self.is_mention(status):
             weather_bot = self.__bots['weather']
             stock_bot = self.__bots['stock']
-            target = (status.text.split(' ')[1]).encode('utf-8')
-            if weather_bot.encode_location(target) is not None:
-                message = weather_bot.get_reply_message(status)
-            elif stock_bot.get_stock_id(target) is not None or \
-                 stock_bot.get_stock_name(target) is not None:
-                message = stock_bot.get_reply_message(status)
-            else:
-                message = self.__account.get_error_message(target)
-            self.__account.post(message, status.id_str)
+            try:
+                target = (status.text.split(' ')[1]).encode('utf-8')
+                if weather_bot.encode_location(target) is not None:
+                    message = weather_bot.get_reply_message(status)
+                elif stock_bot.get_stock_id(target) is not None or \
+                     stock_bot.get_stock_name(target) is not None:
+                    message = stock_bot.get_reply_message(status)
+                else:
+                    message = self.__account.get_error_message(target)
+                self.__account.post(message, status.id_str)
+            except:
+                message = self.__account.get_error_message('？？？')
+                self.__account.post(message, status.id_str)
+
 
     def on_error(self, status_code):
         print 'An error has occured! Status code = %s' % status_code

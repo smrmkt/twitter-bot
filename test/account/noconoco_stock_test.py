@@ -23,14 +23,16 @@ class NoconocoStockTest(unittest.TestCase):
 
     def test_get_stock_id(self):
         bot = NoconocoStock('/../../../test/conf/api_keys.conf')
-        self.assertEqual('7203', bot.get_stock_id('トヨタ'))
-        self.assertEqual('6902', bot.get_stock_id('デンソー'))
+        self.assertEqual(7203, bot.get_stock_id('トヨタ'))
+        self.assertEqual(6902, bot.get_stock_id('デンソー'))
+        self.assertEqual(2432, bot.get_stock_id('DeNA'))
         self.assertEqual(None, bot.get_stock_id('hoge'))
 
     def test_get_stock_name(self):
         bot = NoconocoStock('/../../../test/conf/api_keys.conf')
-        self.assertEqual('トヨタ自動車(株)', bot.get_stock_name('7203'))
-        self.assertEqual('日本電信電話(株)', bot.get_stock_name('9432'))
+        self.assertEqual('トヨタ自動車(株)', bot.get_stock_name(7203))
+        self.assertEqual('日本電信電話(株)', bot.get_stock_name(9432))
+        self.assertEqual('(株)ディー・エヌ・エー', bot.get_stock_name(2432))
         self.assertEqual(None, bot.get_stock_id('hoge'))
 
 def suite():

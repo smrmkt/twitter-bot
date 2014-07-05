@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import datetime
 import jsm
-from lxml import html
 from urllib2 import *
 import tweepy
 
@@ -14,7 +13,8 @@ sys.path.append(script_path + '/../lib/model')
 
 from account import Account
 
-base_url = 'http://info.finance.yahoo.co.jp/'
+info_url = 'http://info.finance.yahoo.co.jp/'
+stock_url = 'http://stocks.finance.yahoo.co.jp/'
 
 class NoconocoStock:
     def __init__(self, conf_path=None):
@@ -38,9 +38,12 @@ class NoconocoStock:
     def get_stock_message(self, stock_id, stock_name):
         q = jsm.Quotes()
         d = q.get_price(stock_id)
-        message = stock_name + 'の株価は' + str(d.close) + 'だしー\n'\
-                  '直近営業日の初値は' + str(d.open) + '，高値は' + str(d.high) +\
-                  '，安値は' + str(d.low) + '，出来高は' + str(d.volume) + 'だしー\n'
+        price = self.get_stock_price(stock_id)
+        if d is None or price is None:
+            return self.get_error_message(stock_name)
+        message = stock_name + '(' + stock_id + ')の株価は' + price + 'だしー\n'\
+                  '前日終値は' + str(d.close) + 'で今日の始値は' + str(d.open) +\
+                  '，高値は' + str(d.high) + '，安値は' + str(d.low) + 'だしー\n'
         return message + 'そんなことより早くあたしを撫でればいいし' + self.get_datetime()
 
     def get_stock_id_name(self, target):
@@ -55,19 +58,41 @@ class NoconocoStock:
             stock_name = target
         return stock_id, stock_name
 
-    def get_stock_id(self, name):
+    def get_stock_price(self, stock_id):
         try:
-            url = base_url + 'search/?query=' + name
-            dom = html.fromstring(urlopen(url).read())
-            el = dom.get_element_by_id('tbodyPortfolio')
-            text = el[0][0].text_content()
-            return re.findall(r'[0-9]+', text)[0]
+            url = stock_url + 'stocks/detail/?code=' + str(stock_id)
+            soup = BeautifulSoup(urlopen(url))
+            res = soup.find_all('td', class_='stoksPrice')
+            regex= r'<.+>(.+)<.+>'
+            price = re.search(regex, str(res[1])).group(1)
+            return price.replace(',', '')
         except:
             return None
 
-    def get_stock_name(self, id):
+    def get_stock_id(self, stock_name):
         try:
-            url = base_url + 'search/?query=' + id
+            url = info_url + 'search/?query=' + stock_name
+            soup = BeautifulSoup(urlopen(url))
+            # 1 search result
+            res = str(soup.find('title'))
+            regex = r'<title>.+【([0-9]+)】.+</title>'
+            matches = re.search(regex, str(res))
+            if matches is not None:
+                return int(matches.group(1))
+            # more than 1 results
+            res = soup.find(id='viewItem1')
+            regex = r'<th .+ title=".+">【<.+>([0-9]+)</a>】.+</th>'
+            matches = re.search(regex, str(res))
+            if matches is not None:
+                return int(matches.group(1))
+            else:
+                return None
+        except:
+            return None
+
+    def get_stock_name(self, stock_id):
+        try:
+            url = info_url + 'search/?query=' + str(stock_id)
             soup = BeautifulSoup(urlopen(url))
             title = str(soup.find('title'))
             regex = r'<title>(.+)【[0-9]+】.+</title>'
