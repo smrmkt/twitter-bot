@@ -54,6 +54,7 @@ class NoconocoStreamListener(tweepy.StreamListener):
             weather_bot = self.__bots['weather']
             stock_bot = self.__bots['stock']
             try:
+                reply_to = '@' + status.user.screen_name.encode('utf-8')
                 target = (status.text.split(' ')[1]).encode('utf-8')
                 if weather_bot.encode_location(target) is not None:
                     message = weather_bot.get_reply_message(status)
@@ -61,7 +62,7 @@ class NoconocoStreamListener(tweepy.StreamListener):
                      stock_bot.get_stock_name(target) is not None:
                     message = stock_bot.get_reply_message(status)
                 else:
-                    message = self.__account.get_error_message(target)
+                    message = reply_to + ' ' + self.__account.get_error_message(target)
                 self.__account.post(message, status.id_str)
             except:
                 message = self.__account.get_error_message('？？？')
