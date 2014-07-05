@@ -24,7 +24,7 @@ class NoconocoStockTest(unittest.TestCase):
     def test_get_stock_id(self):
         bot = NoconocoStock('/../../../test/conf/api_keys.conf')
         self.assertEqual('7203', bot.get_stock_id('トヨタ'))
-        self.assertEqual('9432', bot.get_stock_id('NTT'))
+        self.assertEqual('6902', bot.get_stock_id('デンソー'))
         self.assertEqual(None, bot.get_stock_id('hoge'))
 
     def test_get_stock_name(self):
