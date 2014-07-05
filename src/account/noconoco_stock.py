@@ -41,7 +41,7 @@ class NoconocoStock:
         price = self.get_stock_price(stock_id)
         if d is None or price is None:
             return self.get_error_message(stock_name)
-        message = stock_name + '(' + stock_id + ')の株価は' + price + 'だしー\n'\
+        message = stock_name + '(' + str(stock_id) + ')の株価は' + str(price) + 'だしー\n'\
                   '前日終値は' + str(d.close) + 'で今日の始値は' + str(d.open) +\
                   '，高値は' + str(d.high) + '，安値は' + str(d.low) + 'だしー\n'
         return message + 'そんなことより早くあたしを撫でればいいし' + self.get_datetime()
@@ -65,7 +65,7 @@ class NoconocoStock:
             res = soup.find_all('td', class_='stoksPrice')
             regex= r'<.+>(.+)<.+>'
             price = re.search(regex, str(res[1])).group(1)
-            return price.replace(',', '')
+            return int(price.replace(',', ''))
         except:
             return None
 
