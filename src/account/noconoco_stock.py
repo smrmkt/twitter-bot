@@ -3,11 +3,7 @@
 from BeautifulSoup import BeautifulSoup
 import datetime
 import jsm
-import json
 from lxml import html
-import os
-import re
-import sys
 from urllib2 import *
 import tweepy
 

@@ -6,6 +6,7 @@ python:
 install:
   - pip install BeautifulSoup
   - pip install coveralls
+  - pip install jsm
   - pip install lxml
   - pip install tweepy
 
