@@ -10,6 +10,5 @@ setup(
     name = 'Twitter-bot',
     version = '0.1',
     description='Twitter bot script test code for travis ci',
-    packages = find_packages(),
-    test_suite = 'noconoco_weather_test.suite'
+    packages = find_packages()
 )

@@ -2,12 +2,19 @@
 
 import json
 import mock
+import os
+import sys
 import tweepy.models
 import unittest
 
-from src.account.noconoco_weather import NoconocoWeather
+# path
+script_path = os.path.dirname(__file__)
+script_path = script_path if len(script_path) else '.'
+sys.path.append(script_path + '/../../src/account')
 
-weather_api_path = 'test/data/weather_api_yokohama.json'
+from noconoco_weather import NoconocoWeather
+
+weather_api_path = script_path + '/../data/weather_api_yokohama.json'
 default_message = '横浜の天気をお知らせするしー\n' \
                   '今日の天気は「曇り」で最高気温はよくわかんないし\n' \
                   '明日の天気は「曇り」で最高気温は27度だし\n' \
