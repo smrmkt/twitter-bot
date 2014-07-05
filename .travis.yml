@@ -11,7 +11,7 @@ install:
   - pip install tweepy
 
 script:
-  - nosetests --with-coverage -v -w test/account
+  - nosetests -v --with-coverage -w test/account --cover-package=account
 
 after_success:
   - coveralls
