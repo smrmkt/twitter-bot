@@ -25,7 +25,7 @@ Noconoco bot: [https://twitter.com/noconoco_bot](https://twitter.com/noconoco_bo
 #### Description
 - bot replys to a mention with company name or company code in Tokyo Stock Exchange
 - stock information is taken from [Yahoo! Japan finance](http://finance.yahoo.co.jp/)
--
+
 #### Example 1: company name
 ```
 @noconoco_bot ヤクルト
