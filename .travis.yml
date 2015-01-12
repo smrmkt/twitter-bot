@@ -4,7 +4,7 @@ python:
   - 2.7
 
 install:
-  - pip install bs4
+  - pip install beautifulsoup4
   - pip install coveralls
   - pip install jsm
   - pip install tweepy
