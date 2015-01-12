@@ -52,10 +52,10 @@ class NoconocoStock:
         if stock_id is None and stock_name is None:
             return None, None
         elif stock_id is None:
-            stock_id = int(target)
+            stock_id = self.get_stock_id(stock_name)
         elif stock_name is None:
             stock_id = int(stock_id)
-            stock_name = target
+            stock_name = self.get_stock_name(stock_id)
         return stock_id, stock_name
 
     def get_stock_price(self, stock_id):
@@ -73,15 +73,8 @@ class NoconocoStock:
         try:
             url = info_url + 'search/?query=' + stock_name
             soup = BeautifulSoup(urlopen(url))
-            # 1 search result
-            res = str(soup.find('title'))
-            regex = r'<title>.+【([0-9]+)】.+</title>'
-            matches = re.search(regex, str(res))
-            if matches is not None:
-                return int(matches.group(1))
-            # more than 1 results
-            res = soup.find(id='viewItem1')
-            regex = r'<th .+ title=".+">【<.+>([0-9]+)</a>】.+</th>'
+            res = soup.find('span', {'class': 'code highlight'})
+            regex = r'\[([0-9]+)\]'
             matches = re.search(regex, str(res))
             if matches is not None:
                 return int(matches.group(1))
