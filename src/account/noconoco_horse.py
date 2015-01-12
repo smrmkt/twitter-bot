@@ -62,6 +62,12 @@ class NoconocoHorse:
                 self.get_datetime(),
             )
             messages.append(message)
+        if len(messages) == 0:
+            message = '{0}今週は出走予定の馬がいないみたい．しょぼーん{3}'.format(
+                reply_to,
+                self.get_datetime()
+            )
+            messages.append(message)
         return messages
 
     def get_target_list(self, owner, n_of_list=100):
