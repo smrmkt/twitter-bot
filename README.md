@@ -3,8 +3,15 @@
 [![Coverage Status](https://coveralls.io/repos/smrmkt/twitter-bot/badge.png?branch=master)](https://coveralls.io/r/smrmkt/twitter-bot?branch=master)
 
 ## Account
+### about
 Noconoco bot: [https://twitter.com/noconoco_bot](https://twitter.com/noconoco_bot)
 
+### start command
+```
+python bin/run_noconoco_stream.py
+```
+
+## Bot functions
 ### Japanese weather information
 #### Description
 - bot replys to a mention with majour city name in Japan
@@ -43,4 +50,21 @@ Noconoco bot: [https://twitter.com/noconoco_bot](https://twitter.com/noconoco_bo
 @hoge (株)ヤクルト本社(2267)の株価は5340だしー
 前日終値は5320で今日の始値は5370，高値は5370，安値は5310だしー
 そんなことより早くあたしを撫でればいいし (20:01:15)
+```
+
+### Japanese horse racing information
+
+#### Description
+- bot replys to a mention includes "出走予定"
+- bot tells starters of a specific horse owner in this week
+- horse owner name must be specified in starting bot (default is "社台レースホース")
+
+#### Example
+```
+@noconoco_bot 出走予定を教えて
+```
+
+```
+@hoge よくわかんないけど，01月10日のレースに
+ディープインパクトが出走するみたいだしー (20:01:15)
 ```

@@ -13,7 +13,7 @@ from noconoco_stream import NoconocoStream
 
 # args
 parser = argparse.ArgumentParser(description='run noconoco bot stream')
-parser.add_argument('owner', nargs='?')
+parser.add_argument('owner', nargs='?', default='社台レースホース')
 
 if __name__ == '__main__':
     args = parser.parse_args()
