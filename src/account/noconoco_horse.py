@@ -55,10 +55,6 @@ class NoconocoHorse:
     def create_messages(self, reply_to=''):
         messages = []
         for starter, day in self.get_starters().items():
-            print day
-            print type(day)
-            print starter
-            print type(starter)
             message = '{0}よくわかんないけど，{1}のレースに{2}が出走するみたいだしー{3}'.format(
                 reply_to,
                 day,
