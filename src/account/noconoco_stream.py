@@ -12,15 +12,18 @@ sys.path.append(script_path)
 sys.path.append(script_path + '/../lib/model')
 
 from account import Account
+from noconoco_horse import NoconocoHorse
 from noconoco_stock import NoconocoStock
 from noconoco_weather import NoconocoWeather
+from time import sleep
 
 class NoconocoStream:
-    def __init__(self, conf_path=None):
+    def __init__(self, owner='', conf_path=None):
         self.__account = Account('noconoco_bot', conf_path)
         self.__bots = {
             'stock': NoconocoStock(),
-            'weather': NoconocoWeather()
+            'weather': NoconocoWeather(),
+            'horse': NoconocoHorse(owner)
         }
 
     def get_info(self):
@@ -53,17 +56,27 @@ class NoconocoStreamListener(tweepy.StreamListener):
         if self.is_mention(status):
             weather_bot = self.__bots['weather']
             stock_bot = self.__bots['stock']
+            horse_bot = self.__bots['horse']
             try:
                 reply_to = '@' + status.user.screen_name.encode('utf-8')
                 target = (status.text.split(' ')[1]).encode('utf-8')
                 if weather_bot.encode_location(target) is not None:
                     message = weather_bot.get_reply_message(status)
+                    self.__account.post(message, status.id_str)
                 elif stock_bot.get_stock_id(target) is not None or \
                      stock_bot.get_stock_name(target) is not None:
                     message = stock_bot.get_reply_message(status)
+                    self.__account.post(message, status.id_str)
+                elif target.find('出走予定') > -1:
+                    message = horse_bot.get_wait_message(status)
+                    self.__account.post(message, status.id_str)
+                    messages = horse_bot.get_reply_messages(status)
+                    for message in messages:
+                        self.__account.post(message, status.id_str)
+                        sleep(1)
                 else:
                     message = reply_to + ' ' + self.__account.get_error_message(target)
-                self.__account.post(message, status.id_str)
+                    self.__account.post(message, status.id_str)
             except:
                 message = self.__account.get_error_message('？？？')
                 self.__account.post(message, status.id_str)
