@@ -4,10 +4,9 @@ python:
   - 2.7
 
 install:
-  - pip install BeautifulSoup
+  - pip install bs4
   - pip install coveralls
   - pip install jsm
-  - pip install lxml
   - pip install tweepy
 
 script:
