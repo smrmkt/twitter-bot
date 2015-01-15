@@ -63,7 +63,7 @@ class NoconocoHorse:
             )
             messages.append(message)
         if len(messages) == 0:
-            message = '{0}今週は出走予定の馬がいないみたい．しょぼーん{3}'.format(
+            message = '{0}今週は出走予定の馬がいないみたい．しょぼーん{1}'.format(
                 reply_to,
                 self.get_datetime()
             )
