@@ -45,9 +45,7 @@ class NoconocoRecipe:
         return self.__account.unread_mention()
 
     def get_reply_message(self, mention):
-        location = (mention.text.split(' ')[1]).encode('utf-8')
-        return '@' + mention.user.screen_name.encode('utf-8') +\
-               ' ' + self.get_recipe_message(location)
+        return '@{0} {1}'.format(mention.user.screen_name.encode('utf-8'), self.get_recipe_message())
 
     def get_recipe_message(self):
         recipes = self.get_recipe()
