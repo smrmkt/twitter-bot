@@ -19,7 +19,7 @@ from noconoco_stock import NoconocoStock
 from noconoco_weather import NoconocoWeather
 from time import sleep
 
-recipe_pattern = re.compile('(献立|夕食|夕飯|昼食|昼飯|ご飯｜ごはん|レシピ)')
+recipe_pattern = re.compile('(献立|夕食|夕飯|昼食|昼飯|ご飯|ごはん|レシピ)')
 
 class NoconocoStream:
     def __init__(self, owner='', conf_path=None):
