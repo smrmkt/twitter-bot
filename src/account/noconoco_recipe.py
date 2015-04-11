@@ -52,9 +52,12 @@ class NoconocoRecipe:
     def get_recipe_message(self):
         recipes = self.get_recipe()
         index = random.randint(0, len(recipes['result'])-1)
+        indication = unicode.encode(recipes['result'][index]['recipeIndication'], 'utf-8')
+        if indication == '指定なし':
+            indication = 'てきとうにがんばるん'
         message = '今日のおすすめの献立は「 {0} 」だしー．{1}でできるから，とっても簡単だしー． {2}{3}'.format(
             unicode.encode(recipes['result'][index]['recipeTitle'], 'utf-8'),
-            unicode.encode(recipes['result'][index]['recipeIndication'], 'utf-8'),
+            indication,
             unicode.encode(recipes['result'][index]['recipeUrl'], 'utf-8'),
             self.get_datetime()
         )
