@@ -27,7 +27,7 @@ class NoconocoStream:
         self.__bots = {
             'stock': NoconocoStock(),
             'weather': NoconocoWeather(),
-            'horse': NoconocoHorse(owner)
+            'horse': NoconocoHorse(owner),
             'recipe': NoconocoRecipe()
         }
 
