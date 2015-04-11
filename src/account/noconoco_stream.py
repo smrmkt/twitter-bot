@@ -2,6 +2,7 @@
 
 import datetime
 import os
+import re
 import sys
 import tweepy
 
@@ -13,6 +14,7 @@ sys.path.append(script_path + '/../lib/model')
 
 from account import Account
 from noconoco_horse import NoconocoHorse
+from noconoco_recipe import NoconocoRecipe
 from noconoco_stock import NoconocoStock
 from noconoco_weather import NoconocoWeather
 from time import sleep
@@ -23,7 +25,8 @@ class NoconocoStream:
         self.__bots = {
             'stock': NoconocoStock(),
             'weather': NoconocoWeather(),
-            'horse': NoconocoHorse(owner)
+            'horse': NoconocoHorse(owner),
+            'recipe': NoconocoRecipe()
         }
 
     def get_info(self):
@@ -57,14 +60,14 @@ class NoconocoStreamListener(tweepy.StreamListener):
             weather_bot = self.__bots['weather']
             stock_bot = self.__bots['stock']
             horse_bot = self.__bots['horse']
+            recipe_bot = self.__bots['recipe']
             try:
                 reply_to = '@' + status.user.screen_name.encode('utf-8')
                 target = (status.text.split(' ')[1]).encode('utf-8')
                 if weather_bot.encode_location(target) is not None:
                     message = weather_bot.get_reply_message(status)
                     self.__account.post(message, status.id_str)
-                elif stock_bot.get_stock_id(target) is not None or \
-                     stock_bot.get_stock_name(target) is not None:
+                elif stock_bot.get_stock_id(target) is not None or stock_bot.get_stock_name(target) is not None:
                     message = stock_bot.get_reply_message(status)
                     self.__account.post(message, status.id_str)
                 elif target.find('出走予定') > -1:
@@ -74,6 +77,9 @@ class NoconocoStreamListener(tweepy.StreamListener):
                     for message in messages:
                         self.__account.post(message, status.id_str)
                         sleep(1)
+                elif target.find('献立') > -1:
+                    message = recipe_bot.get_reply_message(status)
+                    self.__account.post(message, status.id_str)
                 else:
                     message = reply_to + ' ' + self.__account.get_error_message(target)
                     self.__account.post(message, status.id_str)
