@@ -21,14 +21,14 @@ class Account:
             self.__mention_path = mention_path
 
         # initialize tweepy api
-        conf = ConfigParser.SafeConfigParser()
-        conf.read(os.path.dirname(__file__) + self.__conf_path)
+        self.conf = ConfigParser.SafeConfigParser()
+        self.conf.read(os.path.dirname(__file__) + self.__conf_path)
         self.__auth = tweepy.OAuthHandler(
-            conf.get(screen_name, 'consumer_key'),
-            conf.get(screen_name, 'consumer_secret'))
+            self.conf.get(screen_name, 'consumer_key'),
+            self.conf.get(screen_name, 'consumer_secret'))
         self.__auth.set_access_token(
-            conf.get(screen_name, 'access_token_key'),
-            conf.get(screen_name, 'access_token_secret'))
+            self.conf.get(screen_name, 'access_token_key'),
+            self.conf.get(screen_name, 'access_token_secret'))
         self.__api = tweepy.API(self.__auth)
 
     def info(self):
