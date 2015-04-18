@@ -33,6 +33,14 @@ class NoconocoHorse:
     def post(self, message, in_reply_to_status_id=None):
         self.__account.post(message, in_reply_to_status_id)
 
+    def reply(self, mention):
+        message = self.get_wait_message(mention)
+        self.__account.post(message, mention.id_str)
+        messages = self.get_reply_messages(mention)
+        for message in messages:
+            self.__account.post(message, mention.id_str)
+            sleep(1)
+
     def get_mentions(self):
         return self.__account.unread_mention()
 

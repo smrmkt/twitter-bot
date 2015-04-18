@@ -2,7 +2,6 @@
 
 import datetime
 import os
-import re
 import sys
 import tweepy
 
@@ -13,20 +12,22 @@ sys.path.append(script_path)
 sys.path.append(script_path + '/../lib/model')
 
 from account import Account
+from noconoco_chat import NoconocoChat
 from noconoco_horse import NoconocoHorse
 from noconoco_recipe import NoconocoRecipe
 from noconoco_stock import NoconocoStock
 from noconoco_weather import NoconocoWeather
-from time import sleep
+
 
 class NoconocoStream:
     def __init__(self, owner='', conf_path=None):
         self.__account = Account('noconoco_bot', conf_path)
         self.__bots = {
-            'stock': NoconocoStock(),
-            'weather': NoconocoWeather(),
+            'chat': NoconocoChat(),
             'horse': NoconocoHorse(owner),
-            'recipe': NoconocoRecipe()
+            'recipe': NoconocoRecipe(),
+            'stock': NoconocoStock(),
+            'weather': NoconocoWeather()
         }
 
     def get_info(self):
@@ -56,37 +57,15 @@ class NoconocoStreamListener(tweepy.StreamListener):
         self.__bots = bots
 
     def on_status(self, status):
-        if self.is_mention(status):
-            weather_bot = self.__bots['weather']
-            stock_bot = self.__bots['stock']
-            horse_bot = self.__bots['horse']
-            recipe_bot = self.__bots['recipe']
-            try:
-                reply_to = '@' + status.user.screen_name.encode('utf-8')
-                target = (status.text.split(' ')[1]).encode('utf-8')
-                if weather_bot.encode_location(target) is not None:
-                    message = weather_bot.get_reply_message(status)
-                    self.__account.post(message, status.id_str)
-                elif stock_bot.get_stock_id(target) is not None or stock_bot.get_stock_name(target) is not None:
-                    message = stock_bot.get_reply_message(status)
-                    self.__account.post(message, status.id_str)
-                elif target.find('出走予定') > -1:
-                    message = horse_bot.get_wait_message(status)
-                    self.__account.post(message, status.id_str)
-                    messages = horse_bot.get_reply_messages(status)
-                    for message in messages:
-                        self.__account.post(message, status.id_str)
-                        sleep(1)
-                elif target.find('献立') > -1:
-                    message = recipe_bot.get_reply_message(status)
-                    self.__account.post(message, status.id_str)
-                else:
-                    message = reply_to + ' ' + self.__account.get_error_message(target)
-                    self.__account.post(message, status.id_str)
-            except:
-                message = self.__account.get_error_message('？？？')
-                self.__account.post(message, status.id_str)
-
+        if self.is_mention(status) is False:
+            return
+        try:
+            sent_message = (status.text.split(' ')[1]).encode('utf-8')
+            bot = NoconocoBotDiscriminator(self.__bots).discriminate(sent_message)
+            bot.reply(status)
+        except Exception:
+            message = self.__account.get_error_message('？？？')
+            self.__account.post(message, status.id_str)
 
     def on_error(self, status_code):
         print 'An error has occured! Status code = %s' % status_code
@@ -108,4 +87,51 @@ class NoconocoStreamListener(tweepy.StreamListener):
                 return False
         except:
             return False
+
+
+class NoconocoBotDiscriminator:
+    def __init__(self, bots=None):
+        self.__bots = bots
+
+    def discriminate(self, sent_message):
+        if self._is_for_horse_bot(sent_message):
+            return self.__bots['horse']
+        elif self._is_for_recipe_bot(sent_message):
+            return self.__bots['recipe']
+        elif self._is_for_weather_bot(sent_message):
+            return self.__bots['weather']
+        elif self._is_for_stock_bot(sent_message):
+            return self.__bots['stock']
+        else:
+            return self.__bots['chat']
+
+    def _is_for_weather_bot(self, sent_message):
+        if self.__bots['weather'].encode_location(sent_message) is not None:
+            return True
+        else:
+            return False
+
+    def _is_for_stock_bot(self, sent_message):
+        if self.__bots['stock'].get_stock_id(sent_message) is not None:
+            return True
+        elif self.__bots['stock'].get_stock_name(sent_message) is not None:
+            return True
+        else:
+            return False
+
+    def _is_for_horse_bot(self, sent_message):
+        if sent_message.find('出走予定') > -1:
+            return True
+        else:
+            return False
+
+    def _is_for_recipe_bot(self, sent_message):
+        if sent_message.find('献立') > -1:
+            return True
+        else:
+            return False
+
+
+
+
 

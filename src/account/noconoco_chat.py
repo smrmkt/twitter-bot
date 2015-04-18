@@ -28,6 +28,10 @@ class NoconocoChat:
     def post(self, message, in_reply_to_status_id=None):
         self.__account.post(message, in_reply_to_status_id)
 
+    def reply(self, mention):
+        message = self.get_reply_message(mention)
+        self.__account.post(message, mention.id_str)
+
     def get_mentions(self):
         return self.__account.unread_mention()
 
