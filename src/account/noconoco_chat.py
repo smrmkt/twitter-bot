@@ -37,7 +37,9 @@ class NoconocoChat:
 
     def get_reply_message(self, mention):
         response = self.get_chat_message(mention)
-        return '@{0} {1}'.format(mention.user.screen_name.encode('utf-8'), response)
+        return '@{0} {1}'.format(
+            mention.user.screen_name.encode('utf-8'),
+            unicode.encode(response))
 
     def get_chat_message(self, mention=None):
         url = '{0}?{1}={2}'.format(api_base_url, 'APIKEY', self.__api_key)
@@ -54,7 +56,7 @@ class NoconocoChat:
     def get_request_data(self, mention):
         data = {}
         if mention is not None:
-            data['utt'] =  mention.text.encode('utf-8'),
+            data['utt'] = (mention.text.split(' ')[1]).encode('utf-8')
             data['nickname'] = mention.user.name.encode('utf-8')
         if self.__context is not None:
             data['context'] = self.__context
