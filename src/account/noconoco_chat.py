@@ -39,7 +39,7 @@ class NoconocoChat:
         response = self.get_chat_message(mention)
         return '@{0} {1}'.format(
             mention.user.screen_name.encode('utf-8'),
-            unicode.encode(response))
+            response.encode('utf-8'))
 
     def get_chat_message(self, mention=None):
         url = '{0}?{1}={2}'.format(api_base_url, 'APIKEY', self.__api_key)
