@@ -20,7 +20,8 @@ class NoconocoChat:
     def __init__(self, conf_path=None):
         self.__account = Account('noconoco_bot', conf_path)
         self.__api_key = self.__account.conf.get('docomo_api', 'api_key')
-        self.__context = None
+        self.__context = ''
+        self.__mode = ''
 
     def get_info(self):
         return self.__account.info()
@@ -49,6 +50,10 @@ class NoconocoChat:
             req = urllib2.Request(url, data, header)
             res = urllib2.urlopen(req)
             dic = json.loads(res.read())
+            if 'context' in dic:
+                self.__context = dic['context']
+            if 'mode' in dic:
+                self.__mode = dic['mode']
             return dic['utt']
         except urllib2.HTTPError, e:
             print e
@@ -59,8 +64,8 @@ class NoconocoChat:
         if mention is not None:
             data['utt'] = (mention.text.split(' ')[1]).encode('utf-8')
             data['nickname'] = mention.user.name.encode('utf-8')
-        if self.__context is not None:
             data['context'] = self.__context
+            data['mode'] = self.__mode
         return json.dumps(data)
 
     def get_datetime(self):
