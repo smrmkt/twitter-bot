@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+
+[noconoco_bot]
+consumer_key        = XXXX
+consumer_secret     = XXXX
+access_token_key    = XXXX
+access_token_secret = XXXX
+
+[rakuten_api]
+application_id      = XXXX
+
+[docomo_api]
+api_key             = XXXX
