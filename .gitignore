@@ -4,4 +4,4 @@
 src/conf/*conf
 src/backup
 .coverage
-.pyenv-version
+.python-version
