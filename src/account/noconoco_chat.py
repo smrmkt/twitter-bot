@@ -51,6 +51,7 @@ class NoconocoChat:
             dic = json.loads(res.read())
             return dic['utt']
         except urllib2.HTTPError, e:
+            print e
             return '意味わかんないしー {0}'.format(self.get_datetime())
 
     def get_request_data(self, mention):
