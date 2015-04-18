@@ -16,19 +16,35 @@ sys.path.append(script_path + '/../lib/model')
 from account import Account
 
 api_base_url = 'https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20121121'
-recipe_categories = {
+main_dish_categories = {
+    "肉": 10,
+    "魚": 11,
     "ご飯もの": 14,
     "パスタ": 15,
     "麺・粉物料理": 16,
     "汁物・スープ": 17,
     "鍋料理": 23,
+    "西洋料理": 25,
     "人気メニュー": 30,
     "定番の肉料理": 31,
     "定番の魚料理": 32,
     "卵料理": 33,
-    "今日の献立": 38
+    "今日の献立": 38,
+    "中華料理": 41,
+    "韓国料理": 42,
+    "イタリア料理": 43,
+    "フランス料理": 44,
+    "エスニック料理・中南米": 46
 }
 
+side_dish_categories = {
+    "野菜": 12,
+    "汁物・スープ": 17,
+    "サラダ": 18,
+    "大豆・豆腐": 35,
+    "簡単料理": 36,
+    "節約料理": 37
+}
 
 class NoconocoRecipe:
     def __init__(self, conf_path=None):
@@ -68,8 +84,8 @@ class NoconocoRecipe:
         return json.loads(res.read())
 
     def get_recipe_category(self):
-        index = random.randint(0, len(recipe_categories)-1)
-        return recipe_categories.items()[index][1]
+        index = random.randint(0, len(main_dish_categories)-1)
+        return main_dish_categories.items()[index][1]
 
     def get_datetime(self):
         d = datetime.datetime.today()
