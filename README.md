@@ -68,3 +68,24 @@ python bin/run_noconoco_stream.py
 @hoge よくわかんないけど，01月10日のレースに
 ディープインパクトが出走するみたいだしー (20:01:15)
 ```
+
+### Japanese recipe information
+
+#### Description
+- bot replys to a mention includes "献立"
+- recipe information is taken from []Rauten recipe](https://webservice.rakuten.co.jp/api/recipecategoryranking/)
+
+#### Example
+```
+@noconoco_bot 今日の献立は何がいい？
+```
+
+```
+@hoge 今日のおすすめの献立は「 ふっくらやわらかになる！ブリの照り焼き 」だしー．約30分でできるから，とっても簡単だしー． recipe.rakuten.co.jp/recipe/1440002… (12:22:57)
+```
+
+### Chat in Japanese
+
+#### Description
+- bot has a chat with you
+- chat feature is constructed from NTT Docomo's [chat dialogue API](https://dev.smt.docomo.ne.jp/?p=docs.api.page&api_name=dialogue&p_name=api_reference)
