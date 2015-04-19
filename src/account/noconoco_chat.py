@@ -19,9 +19,11 @@ api_base_url = 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue'
 class NoconocoChat:
     def __init__(self, conf_path=None):
         self.__account = Account('noconoco_bot', conf_path)
-        self.__api_key = self.__account.conf.get('docomo_api', 'api_key')
+        self.__api_key = self.__account.conf.get('noconoco_chat', 'docomo_api_key')
+        self.__context_expire_seconds = self.__account.conf.get('noconoco_chat', 'context_epire_seconds')
         self.__context = ''
         self.__mode = ''
+        self.__last_replied = datetime.datetime(1970, 1, 1)
 
     def get_info(self):
         return self.__account.info()
@@ -54,6 +56,7 @@ class NoconocoChat:
                 self.__context = dic['context']
             if 'mode' in dic:
                 self.__mode = dic['mode']
+            self.__last_replied = datetime.datetime.now()
             return dic['utt']
         except urllib2.HTTPError, e:
             print e
@@ -64,6 +67,8 @@ class NoconocoChat:
         if mention is not None:
             data['utt'] = (mention.text.split(' ')[1]).encode('utf-8')
             data['nickname'] = mention.user.name.encode('utf-8')
+        diff = datetime.datetime.now() - self.__last_replied
+        if diff.total_seconds() > self.__context_expire_seconds:
             data['context'] = self.__context
             data['mode'] = self.__mode
         return json.dumps(data)
