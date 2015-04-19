@@ -49,7 +49,7 @@ side_dish_categories = {
 class NoconocoRecipe:
     def __init__(self, conf_path=None):
         self.__account = Account('noconoco_bot', conf_path)
-        self.__application_id = self.__account.conf.get('rakuten_api', 'application_id')
+        self.__application_id = self.__account.conf.get('noconoco_recipe', 'rakuten_application_id')
 
     def get_info(self):
         return self.__account.info()

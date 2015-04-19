@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 [noconoco_bot]
-consumer_key        = XXXX
-consumer_secret     = XXXX
-access_token_key    = XXXX
-access_token_secret = XXXX
+consumer_key           = XXXX
+consumer_secret        = XXXX
+access_token_key       = XXXX
+access_token_secret    = XXXX
 
-[rakuten_api]
-application_id      = XXXX
+[noconoco_recipe]
+rakuten_application_id = XXXX
 
-[docomo_api]
-api_key             = XXXX
+[noconoco_chat]
+docomo_api_key         = XXXX
+context_expire_seconds = 600
