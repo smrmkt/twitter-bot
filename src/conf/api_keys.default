@@ -11,4 +11,4 @@ rakuten_application_id = XXXX
 
 [noconoco_chat]
 docomo_api_key         = XXXX
-context_epire_seconds  = 600
+context_expire_seconds = 600
