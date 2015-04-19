@@ -20,7 +20,7 @@ class NoconocoChat:
     def __init__(self, conf_path=None):
         self.__account = Account('noconoco_bot', conf_path)
         self.__api_key = self.__account.conf.get('noconoco_chat', 'docomo_api_key')
-        self.__context_expire_seconds = self.__account.conf.get('noconoco_chat', 'context_epire_seconds')
+        self.__context_expire_seconds = self.__account.conf.get('noconoco_chat', 'context_expire_seconds')
         self.__context = ''
         self.__mode = ''
         self.__last_replied = datetime.datetime(1970, 1, 1)
