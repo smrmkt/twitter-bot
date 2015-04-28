@@ -16,6 +16,20 @@ from account import Account
 
 api_base_url = 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue'
 
+goodbye_phrases = [
+    'じゃあね',
+    'じゃね',
+    'じゃあの',
+    'またね',
+    'さよなら',
+    'おしまい',
+    'お終い',
+    'おわり',
+    '終わり',
+    'バイバイ'
+]
+goodbye_message_limit = 10
+
 class NoconocoChat:
     def __init__(self, conf_path=None):
         self.__account = Account('noconoco_bot', conf_path)
@@ -39,7 +53,10 @@ class NoconocoChat:
         return self.__account.unread_mention()
 
     def get_reply_message(self, mention):
-        response = self.get_chat_message(mention)
+        if self.is_goodbye(mention):
+            response = 'またねー {0}'.format(self.get_datetime())
+        else:
+            response = self.get_chat_message(mention)
         return '@{0} {1}'.format(
             mention.user.screen_name.encode('utf-8'),
             response.encode('utf-8'))
@@ -72,6 +89,15 @@ class NoconocoChat:
             data['context'] = self.__context
             data['mode'] = self.__mode
         return json.dumps(data)
+
+    def is_goodbye(self, mention):
+        sent_message = (mention.text.split(' ')[1]).encode('utf-8')
+        if len(sent_message) > goodbye_message_limit:
+            return False
+        for phrase in goodbye_phrases:
+            if sent_message.find(phrase):
+                return True
+        return False
 
     def get_datetime(self):
         d = datetime.datetime.today()
