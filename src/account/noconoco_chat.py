@@ -2,6 +2,7 @@
 
 import datetime
 import json
+import logging
 import os
 import sys
 import tweepy
@@ -77,7 +78,7 @@ class NoconocoChat:
             self.__last_replied = datetime.datetime.now()
             return dic['utt']
         except urllib2.HTTPError, e:
-            print e
+            logging.exception('some error occurred in getting chat response process.')
             return '意味わかんないしー {0}'.format(self.get_datetime())
 
     def get_request_data(self, mention):
