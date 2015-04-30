@@ -2,6 +2,7 @@
 
 import datetime
 import json
+import logging
 import os
 import sys
 import tweepy
@@ -27,9 +28,12 @@ goodbye_phrases = [
     'お終い',
     'おわり',
     '終わり',
-    'バイバイ'
+    'バイバイ',
+    'ばいばい',
+    'bye',
+    'ノシ'
 ]
-goodbye_message_limit = 10
+goodbye_message_limit = 40
 
 class NoconocoChat:
     def __init__(self, conf_path=None):
@@ -55,7 +59,7 @@ class NoconocoChat:
 
     def get_reply_message(self, mention):
         if self.is_goodbye(mention):
-            response = 'またねー {0}'.format(self.get_datetime())
+            response = 'またねー {0}'.format(self.get_datetime()).decode('utf-8')
         else:
             response = self.get_chat_message(mention)
         return '@{0} {1}'.format(
@@ -77,7 +81,7 @@ class NoconocoChat:
             self.__last_replied = datetime.datetime.now()
             return dic['utt']
         except urllib2.HTTPError, e:
-            print e
+            logging.exception('some error occurred in getting chat response process.')
             return '意味わかんないしー {0}'.format(self.get_datetime())
 
     def get_request_data(self, mention):

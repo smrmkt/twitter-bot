@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import logging
 import os
 import sys
 import tweepy
@@ -64,6 +65,7 @@ class NoconocoStreamListener(tweepy.StreamListener):
             bot = NoconocoBotDiscriminator(self.__bots).discriminate(sent_message)
             bot.reply(status)
         except Exception:
+            logging.exception('some error occurred in response process.')
             message = self.__account.get_error_message('？？？')
             self.__account.post(message, status.id_str)
 
