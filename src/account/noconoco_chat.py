@@ -96,7 +96,7 @@ class NoconocoChat:
         if len(sent_message) > goodbye_message_limit:
             return False
         for phrase in goodbye_phrases:
-            if sent_message.find(phrase):
+            if sent_message.find(phrase) > -1:
                 return True
         return False
 
