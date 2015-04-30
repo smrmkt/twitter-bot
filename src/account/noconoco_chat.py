@@ -28,9 +28,12 @@ goodbye_phrases = [
     'お終い',
     'おわり',
     '終わり',
-    'バイバイ'
+    'バイバイ',
+    'ばいばい',
+    'bye',
+    'ノシ'
 ]
-goodbye_message_limit = 10
+goodbye_message_limit = 40
 
 class NoconocoChat:
     def __init__(self, conf_path=None):
@@ -56,7 +59,7 @@ class NoconocoChat:
 
     def get_reply_message(self, mention):
         if self.is_goodbye(mention):
-            response = 'またねー {0}'.format(self.get_datetime())
+            response = 'またねー {0}'.format(self.get_datetime()).decode('utf-8')
         else:
             response = self.get_chat_message(mention)
         return '@{0} {1}'.format(
