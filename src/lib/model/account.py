@@ -39,9 +39,9 @@ class Account:
 
     def post(self, message, in_reply_to_status_id=None):
         if in_reply_to_status_id is None:
-            self.__api.update_status(message)
+            self.__api.update_status(status=message)
         else:
-            self.__api.update_status(message, in_reply_to_status_id)
+            self.__api.update_status(status=message, in_reply_to_status_id=in_reply_to_status_id)
 
     def mention(self):
         return self.__api.mentions_timeline()
