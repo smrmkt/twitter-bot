@@ -15,6 +15,7 @@ sys.path.append(script_path + '/../lib/model')
 from account import Account
 from noconoco_chat import NoconocoChat
 from noconoco_horse import NoconocoHorse
+from noconoco_horse_profile import NoconocoHorseProfile
 from noconoco_recipe import NoconocoRecipe
 from noconoco_stock import NoconocoStock
 from noconoco_weather import NoconocoWeather
@@ -26,6 +27,7 @@ class NoconocoStream:
         self.__bots = {
             'chat': NoconocoChat(),
             'horse': NoconocoHorse(owner),
+            'horse_profile': NoconocoHorseProfile(),
             'recipe': NoconocoRecipe(),
             'stock': NoconocoStock(),
             'weather': NoconocoWeather()
@@ -98,6 +100,8 @@ class NoconocoBotDiscriminator:
     def discriminate(self, sent_message):
         if self._is_for_horse_bot(sent_message):
             return self.__bots['horse']
+        if self._is_for_horse_profile_bot(sent_message):
+            return self.__bots['horse_profile']
         elif self._is_for_recipe_bot(sent_message):
             return self.__bots['recipe']
         elif self._is_for_weather_bot(sent_message):
@@ -114,18 +118,27 @@ class NoconocoBotDiscriminator:
             return False
 
     def _is_for_stock_bot(self, sent_message):
-        if self.__bots['stock'].get_stock_id(sent_message) is not None:
-            return True
-        elif self.__bots['stock'].get_stock_name(sent_message) is not None:
-            return True
-        else:
+        target = (sent_message.text.split(' ')[1]).encode('utf-8')
+        stock_id = self.__bots['stock'].get_stock_id(target)
+        stock_name = self.__bots['stock'].get_stock_name(target)
+        if stock_id is None and stock_name is None:
             return False
+        else:
+            return True
 
     def _is_for_horse_bot(self, sent_message):
         if sent_message.find('出走予定') > -1:
             return True
         else:
             return False
+
+    def _is_for_horse_profile_bot(self, sent_message):
+        target = (sent_message.text.split(' ')[1]).encode('utf-8')
+        horse_id = self.__bots['horse_profile'].get_horse_id(target)
+        if horse_id is None:
+            return False
+        else:
+            return True
 
     def _is_for_recipe_bot(self, sent_message):
         if sent_message.find('献立') > -1:
