@@ -65,7 +65,7 @@ class NoconocoHorseProfile:
         elements = soup.find_all('input', {'name': 'id'})
         if len(elements) != 1:
             return None
-        return horse_profile_url, elements[0].get('value')
+        return elements[0].get('value')
 
     def get_datetime(self):
         d = datetime.datetime.today()
