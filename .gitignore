@@ -5,3 +5,4 @@ src/conf/*conf
 src/backup
 .coverage
 .python-version
+.spyder*
