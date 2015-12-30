@@ -32,7 +32,7 @@ class NoconocoHorseProfile:
         self.__account.post(message, in_reply_to_status_id)
 
     def reply(self, mention):
-        messages = self.get_reply_message(mention)
+        message = self.get_reply_message(mention)
         self.__account.post(message, mention.id_str)
 
     def get_mentions(self):
