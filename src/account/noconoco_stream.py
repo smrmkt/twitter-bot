@@ -117,8 +117,7 @@ class NoconocoBotDiscriminator:
         else:
             return False
 
-    def _is_for_stock_bot(self, sent_message):
-        target = (sent_message.text.split(' ')[1]).encode('utf-8')
+    def _is_for_stock_bot(self, target):
         stock_id = self.__bots['stock'].get_stock_id(target)
         stock_name = self.__bots['stock'].get_stock_name(target)
         if stock_id is None and stock_name is None:
@@ -132,8 +131,7 @@ class NoconocoBotDiscriminator:
         else:
             return False
 
-    def _is_for_horse_profile_bot(self, sent_message):
-        target = (sent_message.text.split(' ')[1]).encode('utf-8')
+    def _is_for_horse_profile_bot(self, target):
         horse_id = self.__bots['horse_profile'].get_horse_id(target)
         if horse_id is None:
             return False
